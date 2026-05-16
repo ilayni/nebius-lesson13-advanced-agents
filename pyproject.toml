@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bitext-analyst-agent"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.2",
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
+    "pydantic>=2.0",
+    "pandas>=2.0",
+    "datasets>=2.20",
+    "python-dotenv>=1.0",
+    "rich>=13.0",
+    "langgraph-checkpoint-sqlite>=2.0",
+]
+
+[project.optional-dependencies]
+mcp = ["fastmcp>=2.0"]
+ui = ["streamlit>=1.35"]
+dev = ["pytest>=8.0", "ipython"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*"]

@@ -1,0 +1,62 @@
+# Docs / planning (local only)
+cc_docs/
+
+# Dev utilities
+generate_arch.py
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Data & checkpoints
+data/
+*.sqlite
+*.db
+
+# LangGraph / LangSmith
+.langgraph_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# User profiles (runtime-generated)
+profiles/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Coverage / testing
+.coverage
+.pytest_cache/
+htmlcov/
