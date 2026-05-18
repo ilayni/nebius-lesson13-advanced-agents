@@ -7,6 +7,7 @@ The CLI (python main.py) continues to work unchanged — both share the same
 data/checkpoints.sqlite and data/profiles/ directory.
 """
 
+import os
 import sqlite3
 import sys
 from pathlib import Path
@@ -37,13 +38,34 @@ def get_graph():
 
 # ── Session state initialisation ──────────────────────────────────────────────
 
+def _load_history(session_id: str, user_id: str) -> list:
+    """Reload conversation history from the SQLite checkpoint for a given session."""
+    graph = get_graph()
+    config = {"configurable": {"thread_id": session_id, "user_id": user_id}}
+    try:
+        state = graph.get_state(config)
+        if not state or not state.values:
+            return []
+        display = []
+        for msg in state.values.get("messages", []):
+            if isinstance(msg, HumanMessage) and msg.content:
+                display.append({"role": "user", "content": msg.content})
+            elif isinstance(msg, AIMessage) and msg.content and not msg.tool_calls:
+                display.append({"role": "assistant", "content": msg.content, "steps": []})
+        return display
+    except Exception:
+        return []
+
+
 def _init_state():
     if "session_id" not in st.session_state:
-        st.session_state.session_id = "default"
+        st.session_state.session_id = os.environ.get("AGENT_SESSION_ID", "default")
     if "user_id" not in st.session_state:
-        st.session_state.user_id = "default_user"
+        st.session_state.user_id = os.environ.get("AGENT_USER_ID", "default_user")
     if "display_messages" not in st.session_state:
-        st.session_state.display_messages = []
+        st.session_state.display_messages = _load_history(
+            st.session_state.session_id, st.session_state.user_id
+        )
 
 
 # ── Streaming helper ──────────────────────────────────────────────────────────
@@ -146,11 +168,11 @@ def main():
             help="Your persistent profile is keyed to this ID.",
         )
 
-        # Reset display history when session or user changes
+        # Reload history when session or user changes
         if new_session != st.session_state.session_id or new_user != st.session_state.user_id:
             st.session_state.session_id = new_session
             st.session_state.user_id    = new_user
-            st.session_state.display_messages = []
+            st.session_state.display_messages = _load_history(new_session, new_user)
             st.rerun()
 
         if st.button("🗑 Clear display", use_container_width=True):

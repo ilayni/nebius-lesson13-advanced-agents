@@ -59,8 +59,16 @@ if $START_MCP; then
 fi
 
 if $START_UI; then
+  # Pass --session / --user to Streamlit via env vars so the UI pre-fills them
+  AGENT_SESSION="default"
+  AGENT_USER="default_user"
+  for i in "${!AGENT_ARGS[@]}"; do
+    [[ "${AGENT_ARGS[$i]}" == "--session" ]] && AGENT_SESSION="${AGENT_ARGS[$((i+1))]}" || true
+    [[ "${AGENT_ARGS[$i]}" == "--user"    ]] && AGENT_USER="${AGENT_ARGS[$((i+1))]}"    || true
+  done
   echo "Starting Streamlit UI (http://localhost:8501)..."
-  streamlit run streamlit_app.py --server.headless true &
+  AGENT_SESSION_ID="$AGENT_SESSION" AGENT_USER_ID="$AGENT_USER" \
+    streamlit run streamlit_app.py --server.headless true &
   UI_PID=$!
   PIDS+=("$UI_PID")
   wait_for_pid "$UI_PID" "Streamlit UI" 5
