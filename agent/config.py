@@ -11,8 +11,11 @@ MAX_ITERATIONS        = 12   # graceful fallback after this many ReAct steps
 SUMMARIZE_SAMPLE_SIZE = 20   # rows sampled inside summarize_subset
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-ROOT_DIR     = Path(__file__).parent.parent
-DATA_DIR     = ROOT_DIR / "data"
+ROOT_DIR         = Path(__file__).parent.parent
+DATA_DIR         = ROOT_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
+
+CHECKPOINTS_DB   = DATA_DIR / "checkpoints.sqlite"   # Task 2a episodic memory
+PROFILES_DIR     = DATA_DIR / "profiles"              # Task 2b per-user profile files
 
 DATASET_NAME = "bitext/Bitext-customer-support-llm-chatbot-training-dataset"
