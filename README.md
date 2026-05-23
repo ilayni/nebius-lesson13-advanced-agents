@@ -1,7 +1,7 @@
 # Bitext Customer Service Data Analyst Agent
 
 Assignment 3 · Nebius Academy — Advanced Agents  
-**Students:** [First Last] · [First Last]
+**Students:** Ilay Nisim · Boris Kogan
 
 ---
 
@@ -20,9 +20,9 @@ A LangGraph ReAct agent that answers questions about the [Bitext Customer Servic
 **Prerequisites:** Python 3.11+, [uv](https://docs.astral.sh/uv/), Nebius Token Factory API key.
 
 ```bash
-git clone <repo-url> && cd <repo-name>
+git clone <repo-url> && cd FromAIModelToAIAgent-Assignment3-IlayNisim-BorisKogan
 uv venv .venv && source .venv/bin/activate
-uv pip install -e .
+uv pip install -e ".[mcp,ui]"
 cp .env.example .env   # then fill in NEBIUS_API_KEY
 ```
 

@@ -174,13 +174,14 @@ def summarize_subset(
         entries.append("\n".join(parts))
 
     label = (category or "all categories") + (f" / {intent}" if intent else "")
+    data_block = "\n---\n".join(entries)
     prompt = textwrap.dedent(f"""
         Analyse these {len(sample)} customer-service interactions from: {label}.
         Summarize the key patterns, common themes, and notable characteristics in 3–5 concise sentences.
         Be factual — do not invent details not present in the data.
 
         DATA:
-        {"\\n---\\n".join(entries)}
+        {data_block}
     """).strip()
 
     return get_generation_llm().invoke([HumanMessage(content=prompt)]).content
