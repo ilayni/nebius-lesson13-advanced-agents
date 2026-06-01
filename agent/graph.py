@@ -176,3 +176,7 @@ def build_graph(checkpointer=None):
     builder.add_edge("profile_updater", END)
 
     return builder.compile(checkpointer=checkpointer)
+
+
+# Module-level graph for langgraph dev / LangSmith Studio
+graph = build_graph()

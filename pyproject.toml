@@ -16,11 +16,13 @@ dependencies = [
     "python-dotenv>=1.0",
     "rich>=13.0",
     "langgraph-checkpoint-sqlite>=2.0",
+    "langsmith>=0.1",
 ]
 
 [project.optional-dependencies]
 mcp = ["fastmcp>=2.0"]
 ui = ["streamlit>=1.35"]
+studio = ["langgraph-cli[inmem]>=0.1"]
 dev = ["pytest>=8.0", "ipython"]
 
 [tool.setuptools.packages.find]

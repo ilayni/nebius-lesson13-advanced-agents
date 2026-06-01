@@ -31,6 +31,10 @@ data/
 
 # LangGraph / LangSmith
 .langgraph_cache/
+.langgraph_api/
+
+# Claude Code
+.claude/
 
 # Streamlit
 .streamlit/secrets.toml

@@ -146,6 +146,24 @@ The agent would then call tools over the MCP protocol to a separate process inst
 
 For this project the direct approach is correct — MCP server and agent are in the same repo. The MCP server's value is for external clients, not for wiring back into the same agent.
 
+### How does the agent call an MCP tool? Is the MCP call visible?
+
+The MCP call is completely under the hood. From the agent's perspective the call is identical to a local tool:
+1. LLM emits `AIMessage.tool_calls` with tool name + args (e.g. `count_rows({category: "REFUND"})`)
+2. `ToolNode` calls `tool.invoke(args)` — same for every tool
+3. Inside the MCP adapter's `_run()`/`_arun()` — invisible to the agent — the call is serialized, sent over stdio/HTTP to the MCP server process, and the response deserialized
+4. A `ToolMessage` with the result is returned, same as any local tool
+
+The LLM and the graph have no idea MCP is involved. The only difference is latency (process boundary + serialization).
+
+### Where does LangChain identify local vs MCP tool?
+
+It never identifies them at runtime — there is no if/else or type check. The distinction is pure polymorphism decided at **tool creation time**:
+- `@tool` decorator → `StructuredTool`, `_run()` calls the Python function directly
+- `mcp_client.get_tools()` → `MCPTool`, `_run()` makes the MCP protocol call
+
+`ToolNode` just calls `tool.invoke()` on every tool. `bind_tools()` just reads each tool's JSON schema. Neither knows or cares about the underlying implementation. The MCP transport is an implementation detail of the tool subclass, invisible to everything above it.
+
 ---
 
 ## Q4: How is follow-up question context implemented?

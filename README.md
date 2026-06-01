@@ -178,3 +178,35 @@ run.sh          Launch script (--mcp / --ui flags)
 pyproject.toml  dependencies
 .env.example    environment variable template
 ```
+
+---
+
+## LangSmith Studio Integration
+
+This project is configured to support LangSmith Studio out of the box. The `langgraph.json` file maps the compiled agent graph automatically.
+
+**Prerequisites:** Add the following to your `.env`:
+
+```bash
+LANGSMITH_API_KEY=<your LangSmith API key>   # from smith.langchain.com → Settings → API Keys
+LANGSMITH_TRACING=true
+LANGSMITH_PROJECT=nebius-analyst-agent       # optional — groups runs in the UI
+```
+
+**Install the LangGraph CLI** (one-time):
+
+```bash
+uv pip install "langgraph-cli[inmem]"
+```
+
+**Launch the dev server:**
+
+```bash
+uv run langgraph dev
+```
+
+Once running, the agent is accessible:
+- **API:** `http://127.0.0.1:2024`
+- **Visual Studio UI:** `https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024`
+
+Press `Ctrl+C` to stop.

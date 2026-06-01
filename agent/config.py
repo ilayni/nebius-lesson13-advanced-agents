@@ -3,7 +3,7 @@ from pathlib import Path
 # ── Nebius Token Factory models ───────────────────────────────────────────────
 # See cc_docs/model_selection.md for full justification.
 GENERATION_MODEL = "meta-llama/Llama-3.3-70B-Instruct"      # agent ReAct loop + summarization
-ROUTER_MODEL     = "meta-llama/Meta-Llama-3.1-8B-Instruct"  # router + profile updater (Task 2)
+ROUTER_MODEL     = "Qwen/Qwen3-30B-A3B-Instruct-2507"        # router + profile updater (Task 2) — MoE, 3B active params
 NEBIUS_BASE_URL  = "https://api.tokenfactory.nebius.com/v1/"
 
 # ── Agent behaviour ───────────────────────────────────────────────────────────
